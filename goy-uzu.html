@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#8ec5e8">
+<title>Toy Dəvətnaməsi — Göy Üzü</title>
+<meta property="og:title" content="Toy Dəvətnaməsi">
+<meta property="og:description" content="Toy şənliyimizə dəvətlisiniz — açmaq üçün toxunun">
+<style>
+  :root{
+    --sky1:#7cb9e8; --sky2:#a8d4f0; --sky3:#dbeeff;
+    --cloud:#ffffff; --cloud2:#eaf4ff;
+    --gold:#f6d489; --rose:#f3a8b8; --deep:#2e5f86;
+    --cream:#ffffff; --ink:#26455e;
+    --door:#eef7ff; --door2:#d7e9f8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;overflow-x:hidden}
+  body{
+    font-family:"Georgia","Times New Roman",serif;
+    background:linear-gradient(180deg,#5aa6dc 0%,#8ec5e8 32%,#bfe0f5 62%,#f3e2d0 88%,#f7d9c4 100%);
+    background-attachment:fixed;
+    color:var(--ink);min-height:100vh;min-height:100dvh;
+    display:flex;align-items:center;justify-content:center;position:relative;
+    -webkit-text-size-adjust:100%;
+  }
+  body.locked{overflow:hidden;position:fixed;width:100%}
+  .scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+
+  /* günəş + şüalar */
+  .sun{position:absolute;top:9%;left:74%;width:clamp(64px,16vw,110px);height:clamp(64px,16vw,110px);
+    border-radius:50%;background:radial-gradient(circle at 45% 45%,#fffdf0,#ffeeb8 55%,#ffd980);
+    box-shadow:0 0 60px 22px rgba(255,235,170,.55),0 0 150px 60px rgba(255,225,150,.25);
+    animation:pulse 6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:.95}50%{transform:scale(1.06);opacity:1}}
+  .rays{position:absolute;top:9%;left:74%;width:clamp(64px,16vw,110px);height:clamp(64px,16vw,110px);
+    animation:spin 60s linear infinite}
+  .rays::before,.rays::after{content:"";position:absolute;top:50%;left:50%;
+    width:min(150vw,900px);height:2px;transform-origin:0 50%;
+    background:linear-gradient(90deg,rgba(255,240,190,.35),transparent 70%)}
+  .rays::after{transform:rotate(38deg)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* BULUD QATLARI — parallaks */
+  .cloudlayer{position:absolute;left:0;width:200%;display:flex;will-change:transform}
+  .cloudlayer > div{flex:0 0 50%;position:relative;height:100%}
+  .cl1{top:6%;height:20vh;animation:float-l 52s linear infinite;opacity:.95}
+  .cl2{top:22%;height:26vh;animation:float-l 78s linear infinite;opacity:.8}
+  .cl3{top:40%;height:22vh;animation:float-l 112s linear infinite;opacity:.6}
+  @keyframes float-l{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+  .cloud{position:absolute;filter:drop-shadow(0 8px 18px rgba(70,120,160,.18))}
+  .cloud svg{display:block;width:100%;height:auto}
+
+  /* quşlar */
+  .bird{position:absolute;color:rgba(45,80,110,.65);font-size:clamp(10px,2.6vw,15px);
+    animation:cross linear infinite}
+  .bird i{display:inline-block;font-style:normal;animation:flap 1s ease-in-out infinite}
+  @keyframes flap{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.35)}}
+  @keyframes cross{
+    0%{transform:translate3d(-12vw,0,0);opacity:0}
+    8%{opacity:1}88%{opacity:1}
+    100%{transform:translate3d(112vw,-8vh,0);opacity:0}
+  }
+
+  /* hava şarı */
+  .balloon{position:absolute;left:8%;bottom:-30vh;width:clamp(42px,11vw,72px);
+    animation:ascend 46s linear infinite}
+  .balloon .in{animation:swing 5s ease-in-out infinite;transform-origin:50% 0}
+  @keyframes ascend{0%{bottom:-30vh;opacity:0}8%{opacity:1}86%{opacity:1}100%{bottom:112vh;opacity:0}}
+  @keyframes swing{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+
+  /* uçuşan ləçək/işıq zərrələri */
+  .motes{position:absolute;inset:0;overflow:hidden}
+  .mote{position:absolute;top:-30px;opacity:0;animation:drop linear infinite;will-change:transform}
+  @keyframes drop{
+    0%{transform:translate3d(0,-30px,0) rotate(0);opacity:0}
+    12%{opacity:.9}86%{opacity:.9}
+    100%{transform:translate3d(50px,108vh,0) rotate(380deg);opacity:0}
+  }
+
+  /* ===== QAPI: buludlu şüşə balkon qapısı ===== */
+  .gate{position:fixed;inset:0;z-index:20;display:flex;perspective:1400px;cursor:pointer;overflow:hidden;touch-action:manipulation}
+  .gate.open{pointer-events:none}
+  .gate.gone{display:none}
+  .door{position:relative;width:50.2%;height:100%;
+    background:linear-gradient(180deg,var(--door),var(--door2));
+    box-shadow:inset 0 0 90px rgba(46,95,134,.18);
+    transition:transform 2s cubic-bezier(.6,0,.2,1);
+    transform-style:preserve-3d;backface-visibility:hidden;will-change:transform;overflow:hidden}
+  .door.left{transform-origin:left center;border-right:2px solid rgba(46,95,134,.16)}
+  .door.right{transform-origin:right center;border-left:2px solid rgba(46,95,134,.16)}
+  .gate.open .door.left{transform:rotateY(-104deg)}
+  .gate.open .door.right{transform:rotateY(104deg)}
+  /* şüşə bölmələr */
+  .panes{position:absolute;inset:clamp(14px,4vw,26px);border:clamp(6px,1.8vw,10px) solid #fff;
+    border-radius:6px;overflow:hidden;
+    box-shadow:0 0 0 2px rgba(46,95,134,.18), inset 0 0 0 2px rgba(46,95,134,.12);
+    background:linear-gradient(160deg,rgba(255,255,255,.75),rgba(190,224,245,.55));
+    background-image:
+      linear-gradient(#fff,#fff),
+      linear-gradient(#fff,#fff),
+      linear-gradient(160deg,rgba(255,255,255,.7),rgba(190,224,245,.5));
+    background-size:100% 6px, 6px 100%, 100% 100%;
+    background-position:0 33.3%, 50% 0, 0 0;
+    background-repeat:no-repeat}
+  /* qapı arxasından görünən buludlar */
+  .door .peek{position:absolute;inset:clamp(20px,5vw,34px);overflow:hidden;opacity:.5;border-radius:4px}
+  .door .peek span{position:absolute;color:#fff;font-size:clamp(26px,8vw,46px);
+    animation:peekdrift 26s linear infinite;text-shadow:0 2px 10px rgba(120,170,210,.4)}
+  @keyframes peekdrift{from{transform:translateX(-40%)}to{transform:translateX(140%)}}
+  .handle{position:absolute;top:50%;transform:translateY(-50%);
+    width:clamp(11px,2.6vw,16px);height:clamp(40px,9.5vw,56px);border-radius:9px;
+    background:linear-gradient(180deg,#fff,#b9d4e8);box-shadow:0 2px 9px rgba(46,95,134,.3)}
+  .door.left .handle{right:clamp(9px,2.6vw,16px)}
+  .door.right .handle{left:clamp(9px,2.6vw,16px)}
+
+  .gate-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    z-index:2;text-align:center;pointer-events:none;width:90%;transition:opacity .5s ease}
+  .gate.open .gate-center{opacity:0}
+  .monogram{width:clamp(88px,26vw,120px);height:clamp(88px,26vw,120px);margin:0 auto clamp(16px,4vw,22px);
+    border-radius:50%;display:flex;align-items:center;justify-content:center;
+    border:3px solid var(--deep);color:var(--deep);font-size:clamp(28px,8vw,42px);letter-spacing:2px;
+    background:rgba(255,255,255,.9);box-shadow:0 8px 26px rgba(46,95,134,.28);
+    animation:mfloat 3.6s ease-in-out infinite}
+  @keyframes mfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .tap-hint{font-size:clamp(11px,3.2vw,14px);letter-spacing:3px;text-transform:uppercase;color:var(--deep);font-weight:bold}
+  .tap-hint small{display:block;margin-top:8px;font-size:clamp(22px,6vw,26px);animation:tapper 1.6s ease-in-out infinite}
+  @keyframes tapper{0%,100%{transform:translateY(0);opacity:.6}50%{transform:translateY(-8px);opacity:1}}
+
+  /* ===== KART ===== */
+  .card{position:relative;z-index:5;width:min(92vw,560px);
+    margin:clamp(20px,6vw,40px) auto;
+    padding:clamp(34px,9vw,56px) clamp(20px,6vw,34px) clamp(30px,8vw,46px);
+    text-align:center;
+    background:rgba(255,255,255,.72);
+    border:1px solid rgba(255,255,255,.85);border-radius:20px;
+    box-shadow:0 22px 60px rgba(46,95,134,.28), inset 0 0 60px rgba(255,255,255,.5);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);overflow:hidden}
+  .card::before{content:"";position:absolute;top:0;left:-60%;width:60%;height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent)}
+  .revealed.card::before{animation:shine 6s ease-in-out 1s infinite}
+  @keyframes shine{0%{left:-60%}45%,100%{left:130%}}
+  .reveal{opacity:0;transform:translateY(22px)}
+  .revealed .reveal{animation:up .9s ease forwards}
+  @keyframes up{to{opacity:1;transform:translateY(0)}}
+  .top{font-size:clamp(11px,3vw,13px);letter-spacing:4px;text-transform:uppercase;color:var(--deep);animation-delay:.2s}
+  .ornament{font-size:clamp(24px,6.5vw,30px);margin:14px 0 6px;animation-delay:.4s}
+  .ornament span{display:inline-block;animation:sway 3.6s ease-in-out infinite}
+  .names{font-size:clamp(30px,10vw,54px);line-height:1.15;color:#1f3d55;margin:10px 0;font-weight:normal;overflow-wrap:break-word}
+  .name{animation-delay:.6s}
+  .amp{display:block;font-size:clamp(22px,6vw,28px);color:var(--rose);margin:4px 0;animation-delay:.75s;font-style:italic}
+  .amp2{animation-delay:.9s}
+  .sub{font-size:clamp(13px,3.6vw,15px);letter-spacing:1.5px;color:var(--deep);margin-top:14px;animation-delay:1s}
+  .divider{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--deep),transparent);margin:clamp(20px,5vw,26px) auto}
+  .revealed .divider{animation:grow 1.1s ease 1.1s forwards}
+  @keyframes grow{to{width:78%}}
+  .detail{margin:14px 0;animation-delay:1.25s}
+  .detail .label{font-size:clamp(10px,2.8vw,11px);letter-spacing:2.5px;text-transform:uppercase;color:var(--rose)}
+  .detail .value{font-size:clamp(16px,4.4vw,19px);color:var(--ink);margin-top:5px;line-height:1.45}
+  .countdown{display:flex;justify-content:center;gap:clamp(7px,2.4vw,14px);margin:clamp(22px,6vw,30px) 0 10px;animation-delay:1.5s}
+  .cd-box{flex:1;max-width:74px;padding:clamp(9px,2.6vw,12px) 4px;border-radius:11px;
+    background:rgba(124,185,232,.16);border:1px solid rgba(46,95,134,.25)}
+  .cd-num{font-size:clamp(19px,5.6vw,26px);color:var(--deep);line-height:1}
+  .cd-lab{font-size:clamp(8px,2.3vw,10px);letter-spacing:1px;text-transform:uppercase;color:#5883a5;margin-top:6px}
+  .footer{margin-top:clamp(20px,5vw,26px);font-size:clamp(12px,3.3vw,13px);color:var(--deep);
+    animation-delay:1.7s;font-style:italic;line-height:1.6}
+  .rings{font-size:clamp(26px,7vw,30px);margin-top:8px;animation-delay:1.8s}
+  .rings span{display:inline-block;animation:sway 3s ease-in-out infinite}
+  @keyframes sway{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(9deg)}}
+  @media (max-height:600px){.monogram{width:72px;height:72px;font-size:24px;margin-bottom:12px}.card{margin:16px auto}}
+</style>
+</head>
+<body>
+<div class="scene">
+  <div class="rays"></div>
+  <div class="sun"></div>
+
+  <div class="cloudlayer cl1" id="cl1"><div></div><div></div></div>
+  <div class="cloudlayer cl2" id="cl2"><div></div><div></div></div>
+  <div class="cloudlayer cl3" id="cl3"><div></div><div></div></div>
+
+  <div id="birds"></div>
+
+  <div class="balloon"><div class="in">
+    <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 4 C78 4 94 26 94 48 C94 74 68 92 50 108 C32 92 6 74 6 48 C6 26 22 4 50 4 Z" fill="#f3a8b8"/>
+      <path d="M50 4 C60 4 66 24 66 50 C66 76 58 96 50 108 C42 96 34 76 34 50 C34 24 40 4 50 4 Z" fill="#fdd9a0"/>
+      <path d="M50 4 C54 4 56 24 56 50 C56 76 53 96 50 108 C47 96 44 76 44 50 C44 24 46 4 50 4 Z" fill="#a8d4f0"/>
+      <path d="M40 108 L44 124 M60 108 L56 124" stroke="#7a5c3e" stroke-width="2.5"/>
+      <rect x="40" y="122" width="20" height="14" rx="3" fill="#a8763f"/>
+    </svg>
+  </div></div>
+
+  <div class="motes" id="motes"></div>
+</div>
+
+<div class="gate" id="gate">
+  <div class="door left">
+    <div class="peek"><span style="top:14%;animation-delay:0s">☁</span><span style="top:52%;animation-delay:9s">☁</span></div>
+    <div class="panes"></div><div class="handle"></div>
+  </div>
+  <div class="door right">
+    <div class="peek"><span style="top:30%;animation-delay:5s">☁</span><span style="top:70%;animation-delay:15s">☁</span></div>
+    <div class="panes"></div><div class="handle"></div>
+  </div>
+  <div class="gate-center">
+    <div class="monogram" id="monogram">A&amp;R</div>
+    <div class="tap-hint">Açmaq üçün toxunun<small>👆</small></div>
+  </div>
+</div>
+
+<main class="card" id="card">
+  <div class="top reveal" id="topText">Dəvətlisiniz</div>
+  <div class="ornament reveal"><span>☁️</span></div>
+  <h1 class="names">
+    <div class="name reveal" id="name1">Aynur</div>
+    <span class="amp reveal">&amp;</span>
+    <div class="name reveal amp2" id="name2">Rəşad</div>
+  </h1>
+  <div class="sub reveal" id="subText">bir olmağımızın toy şənliyinə</div>
+  <div class="divider"></div>
+  <div class="detail reveal"><div class="label">Tarix</div><div class="value" id="dateText">12 Sentyabr 2026 · Şənbə · saat 18:00</div></div>
+  <div class="detail reveal"><div class="label">Məkan</div><div class="value" id="venueText">Gül Palace Şadlıq Sarayı, Bakı</div></div>
+  <div class="countdown" id="countdown"></div>
+  <div class="footer reveal" id="footerText">Bu xüsusi günü bizimlə bölüşməyinizi arzu edirik</div>
+  <div class="rings reveal"><span>💍</span></div>
+</main>
+
+<script>
+/* ===== BURANI DƏYİŞ ===== */
+const MELUMAT = {
+  monoqram:"A&R", ad1:"Aynur", ad2:"Rəşad",
+  ustYazi:"Dəvətlisiniz",
+  altYazi:"bir olmağımızın toy şənliyinə",
+  tarixYazi:"12 Sentyabr 2026 · Şənbə · saat 18:00",
+  mekan:"Gül Palace Şadlıq Sarayı, Bakı",
+  sonYazi:"Bu xüsusi günü bizimlə bölüşməyinizi arzu edirik",
+  toyTarixi:"2026-09-12T18:00:00"
+};
+/* ===== BURANI DƏYİŞ ===== */
+
+const $=id=>document.getElementById(id);
+$("monogram").textContent=MELUMAT.monoqram; $("name1").textContent=MELUMAT.ad1;
+$("name2").textContent=MELUMAT.ad2; $("topText").textContent=MELUMAT.ustYazi;
+$("subText").textContent=MELUMAT.altYazi; $("dateText").textContent=MELUMAT.tarixYazi;
+$("venueText").textContent=MELUMAT.mekan; $("footerText").textContent=MELUMAT.sonYazi;
+document.title=MELUMAT.ad1+" & "+MELUMAT.ad2+" — Toy Dəvətnaməsi";
+
+const small=window.innerWidth<600;
+
+// bulud SVG-si
+function cloudSVG(op){
+  return `<svg viewBox="0 0 300 130" xmlns="http://www.w3.org/2000/svg">
+    <g fill="#ffffff" opacity="${op}">
+      <ellipse cx="90" cy="82" rx="66" ry="40"/>
+      <ellipse cx="140" cy="58" rx="54" ry="44"/>
+      <ellipse cx="196" cy="80" rx="60" ry="38"/>
+      <rect x="34" y="80" width="220" height="40" rx="20"/>
+    </g>
+    <g fill="#dceeff" opacity="${op*0.8}">
+      <ellipse cx="112" cy="104" rx="60" ry="16"/>
+      <ellipse cx="196" cy="104" rx="52" ry="14"/>
+    </g>
+  </svg>`;
+}
+// hər qata buludlar yerləşdir (iki eyni yarım — sonsuz axın üçün)
+const layerCfg=[
+  {id:"cl1", n:small?2:3, w:[26,40], op:.98},
+  {id:"cl2", n:small?2:4, w:[34,54], op:.85},
+  {id:"cl3", n:small?2:3, w:[44,66], op:.55}
+];
+layerCfg.forEach(cfg=>{
+  const halves=$(cfg.id).children;
+  // eyni düzülüşü hər iki yarımda təkrarla
+  const plan=[];
+  for(let i=0;i<cfg.n;i++){
+    plan.push({
+      left:(i*(100/cfg.n)+Math.random()*10)+"%",
+      top:(Math.random()*55)+"%",
+      w:(cfg.w[0]+Math.random()*(cfg.w[1]-cfg.w[0]))+"vw"
+    });
+  }
+  [0,1].forEach(h=>{
+    plan.forEach(p=>{
+      const c=document.createElement("div");c.className="cloud";
+      c.style.left=p.left;c.style.top=p.top;c.style.width=p.w;
+      c.innerHTML=cloudSVG(cfg.op);
+      halves[h].appendChild(c);
+    });
+  });
+});
+
+// quşlar
+const bw=$("birds");
+for(let i=0;i<(small?4:7);i++){
+  const b=document.createElement("div");b.className="bird";
+  b.innerHTML="<i>\u1B5C</i>";
+  b.style.top=(10+Math.random()*38)+"vh";
+  b.style.animationDuration=(26+Math.random()*20)+"s";
+  b.style.animationDelay=(Math.random()*24)+"s";
+  bw.appendChild(b);
+}
+// zərrələr
+const chars=["🌸","✦","🕊","❀"], mw=$("motes");
+for(let i=0;i<(small?9:16);i++){
+  const m=document.createElement("div");m.className="mote";
+  m.textContent=chars[i%chars.length];
+  m.style.left=Math.random()*100+"vw";
+  m.style.animationDuration=(12+Math.random()*10)+"s";
+  m.style.animationDelay=(Math.random()*12)+"s";
+  m.style.fontSize=((small?10:13)+Math.random()*(small?9:12))+"px";
+  mw.appendChild(m);
+}
+
+const gate=$("gate"),card=$("card");
+document.body.classList.add("locked");
+let opened=false;
+function openGate(e){if(opened)return;if(e)e.preventDefault();opened=true;
+  gate.classList.add("open");card.classList.add("revealed");
+  setTimeout(()=>{gate.classList.add("gone");document.body.classList.remove("locked")},2100);}
+gate.addEventListener("pointerdown",openGate);
+gate.addEventListener("click",openGate);
+gate.addEventListener("touchstart",openGate,{passive:false});
+
+const wd=new Date(MELUMAT.toyTarixi),lb=["Gün","Saat","Dəq","San"],cd=$("countdown");
+function r(){const d=wd-new Date();let v=[0,0,0,0];
+  if(d>0)v=[Math.floor(d/864e5),Math.floor(d/36e5)%24,Math.floor(d/6e4)%60,Math.floor(d/1e3)%60];
+  cd.innerHTML=v.map((x,i)=>`<div class="cd-box"><div class="cd-num">${String(x).padStart(2,"0")}</div><div class="cd-lab">${lb[i]}</div></div>`).join("");}
+r();setInterval(r,1000);
+</script>
+</body>
+</html>

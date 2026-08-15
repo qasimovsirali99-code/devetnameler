@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1b1430">
+<title>Toy Dəvətnaməsi — Üslub Seçimi</title>
+<meta property="og:title" content="Toy Dəvətnaməsi — Nümunələr">
+<meta property="og:description" content="Dörd fərqli üslubda canlı toy dəvətnaməsi">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:"Georgia","Times New Roman",serif;
+    background:radial-gradient(circle at 50% 0%,#2c2148,#161029 70%);
+    background-attachment:fixed;
+    color:#f2ecdf;min-height:100vh;
+    padding:clamp(30px,8vw,60px) clamp(16px,5vw,30px);
+  }
+  .head{text-align:center;max-width:640px;margin:0 auto clamp(30px,7vw,48px)}
+  .head .kicker{font-size:clamp(10px,2.8vw,12px);letter-spacing:5px;text-transform:uppercase;color:#e0bd85}
+  .head h1{font-size:clamp(26px,7vw,40px);font-weight:normal;margin:14px 0 12px;color:#fdf8ef}
+  .head p{font-size:clamp(13px,3.5vw,15px);color:#b9aec9;line-height:1.65}
+
+  .grid{display:grid;gap:clamp(16px,4vw,24px);max-width:900px;margin:0 auto;
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+
+  .tile{
+    display:block;text-decoration:none;color:inherit;
+    border-radius:18px;overflow:hidden;position:relative;
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 16px 40px rgba(0,0,0,.4);
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .tile:active{transform:scale(.98)}
+  @media (hover:hover){.tile:hover{transform:translateY(-6px);box-shadow:0 24px 55px rgba(0,0,0,.5)}}
+
+  .thumb{height:clamp(150px,34vw,190px);position:relative;overflow:hidden}
+  /* dəniz */
+  .t-deniz{background:linear-gradient(180deg,#1d5a7a,#6aa8b2 42%,#f2ab7c 52%,#136f92 56%,#062c3f)}
+  .t-deniz::after{content:"";position:absolute;bottom:0;left:-50%;width:200%;height:52%;
+    background:radial-gradient(ellipse at 50% 100%,rgba(191,240,232,.45),transparent 65%);
+    border-radius:45%;animation:roll 8s linear infinite}
+  @keyframes roll{to{transform:translateX(25%) rotate(360deg)}}
+  /* göy */
+  .t-goy{background:linear-gradient(180deg,#5aa6dc,#a8d4f0 55%,#f3e2d0)}
+  .t-goy::after{content:"☁ ☁ ☁";position:absolute;top:26%;left:0;font-size:34px;color:#fff;
+    white-space:nowrap;opacity:.9;animation:slide 16s linear infinite}
+  @keyframes slide{from{transform:translateX(-30%)}to{transform:translateX(130%)}}
+  /* bağ */
+  .t-bag{background:linear-gradient(180deg,#dcefff,#eaf6e4 42%,#b9d69d)}
+  .t-bag::after{content:"🌳  🌸  🌿  🌷";position:absolute;bottom:16%;left:50%;transform:translateX(-50%);
+    font-size:28px;white-space:nowrap;animation:bobb 4s ease-in-out infinite}
+  @keyframes bobb{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-7px)}}
+  /* klassik */
+  .t-klassik{background:radial-gradient(circle at 50% 30%,#3b2a5e,#1a1230)}
+  .t-klassik::after{content:"✦";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-size:52px;color:#e8c88a;animation:glow 3s ease-in-out infinite}
+  @keyframes glow{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}}
+
+  .meta{padding:clamp(16px,4vw,20px);background:rgba(255,255,255,.05)}
+  .meta h2{font-size:clamp(17px,4.5vw,20px);font-weight:normal;color:#fdf8ef;margin-bottom:6px}
+  .meta p{font-size:clamp(12px,3.2vw,13px);color:#b9aec9;line-height:1.55}
+  .meta .go{display:inline-block;margin-top:12px;font-size:11px;letter-spacing:2.5px;
+    text-transform:uppercase;color:#e0bd85}
+
+  .foot{text-align:center;margin-top:clamp(30px,7vw,46px);font-size:clamp(11px,3vw,13px);
+    color:#8d84a3;font-style:italic}
+</style>
+</head>
+<body>
+  <div class="head">
+    <div class="kicker">Nümunələr</div>
+    <h1>Toy Dəvətnaməsi</h1>
+    <p>Dörd fərqli üslub. Hər birində qapı açılır və dəvətnamə içəridən görünür — birinə toxunub baxın.</p>
+  </div>
+
+  <div class="grid">
+    <a class="tile" href="deniz.html">
+      <div class="thumb t-deniz"></div>
+      <div class="meta">
+        <h2>Dəniz</h2>
+        <p>Axan dalğalar, batan günəş, yelkənli qayıq və qağayılar. Qapı sahil evinin ağ jalüzüdür.</p>
+        <span class="go">Bax →</span>
+      </div>
+    </a>
+
+    <a class="tile" href="goy-uzu.html">
+      <div class="thumb t-goy"></div>
+      <div class="meta">
+        <h2>Göy Üzü</h2>
+        <p>Süzülən bulud qatları, günəş şüaları, quşlar və hava şarı. Qapı buludlu şüşə balkondur.</p>
+        <span class="go">Bax →</span>
+      </div>
+    </a>
+
+    <a class="tile" href="bag.html">
+      <div class="thumb t-bag"></div>
+      <div class="meta">
+        <h2>Bağ</h2>
+        <p>Küləkdə yellənən ağaclar, gül zolağı, kəpənəklər. Qapı sarmaşıqlı ağ bağ darvazasıdır.</p>
+        <span class="go">Bax →</span>
+      </div>
+    </a>
+
+    <a class="tile" href="klassik.html">
+      <div class="thumb t-klassik"></div>
+      <div class="meta">
+        <h2>Klassik Qızılı</h2>
+        <p>Tünd bənövşəyi fon, qızıl haşiyəli qapı, süzülən ləçəklər. Sadə və zərif.</p>
+        <span class="go">Bax →</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="foot">Adlar, tarix və məkan nümunə üçündür — sifarişə görə dəyişdirilir.</div>
+</body>
+</html>
