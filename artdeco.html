@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#0c0c11">
+<title>Toy Dəvətnaməsi — Art Deco</title>
+<meta property="og:title" content="Toy Dəvətnaməsi">
+<meta property="og:description" content="Toy şənliyimizə dəvətlisiniz">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Jost:wght@200;300;400&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0c0c11; --ink2:#15151d; --marble:#1e1e28;
+    --gold:#c9a227; --gold-l:#f0dda0; --gold-d:#8a6d18;
+    --champagne:#e9dcc0; --pearl:#f7f3ea;
+    --display:"Playfair Display",Georgia,serif;
+    --sans:"Jost","Segoe UI",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;overflow-x:hidden}
+  body{
+    font-family:var(--sans);font-weight:300;
+    background:var(--ink);
+    color:var(--pearl);min-height:100vh;min-height:100dvh;
+    display:flex;align-items:center;justify-content:center;position:relative;
+    -webkit-text-size-adjust:100%;
+  }
+  body.locked{overflow:hidden;position:fixed;width:100%}
+
+  /* mərmər damarları */
+  .scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+    background:
+      radial-gradient(ellipse at 22% 18%, rgba(201,162,39,.07), transparent 45%),
+      radial-gradient(ellipse at 78% 76%, rgba(201,162,39,.05), transparent 42%),
+      linear-gradient(160deg,#15151d,#0c0c11 60%)}
+  .scene svg{position:absolute;inset:0;width:100%;height:100%;opacity:.14}
+  .vein{stroke:var(--gold);fill:none;stroke-width:.8;
+    stroke-dasharray:1400;stroke-dashoffset:1400;
+    animation:draw 5s ease forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+
+  /* günəş şüaları (art deco fan) */
+  .fan{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:min(180vw,1400px);height:min(180vw,1400px);z-index:0;pointer-events:none;
+    background:repeating-conic-gradient(from 0deg at 50% 50%,
+      rgba(201,162,39,.045) 0 1.6deg, transparent 1.6deg 8deg);
+    animation:turn 140s linear infinite}
+  @keyframes turn{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+  /* qızıl zərrələr */
+  .dust{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+  .dust i{position:absolute;border-radius:50%;background:var(--gold-l);opacity:0;
+    animation:float linear infinite}
+  @keyframes float{
+    0%{transform:translate3d(0,20px,0);opacity:0}
+    18%{opacity:.55}78%{opacity:.55}
+    100%{transform:translate3d(24px,-104vh,0);opacity:0}
+  }
+
+  /* ===== QAPI: qızıl deco barmaqlıq ===== */
+  .gate{position:fixed;inset:0;z-index:20;display:flex;perspective:1600px;cursor:pointer;overflow:hidden;touch-action:manipulation}
+  .gate.open{pointer-events:none}
+  .gate.gone{display:none}
+  .door{position:relative;width:50.2%;height:100%;
+    background:linear-gradient(150deg,#20202b,#0f0f16 55%,#191922);
+    transition:transform 2.1s cubic-bezier(.62,0,.2,1);
+    transform-style:preserve-3d;backface-visibility:hidden;will-change:transform;overflow:hidden}
+  .door.left{transform-origin:left center}
+  .door.right{transform-origin:right center}
+  .gate.open .door.left{transform:rotateY(-106deg)}
+  .gate.open .door.right{transform:rotateY(106deg)}
+
+  /* pilləli deco haşiyə */
+  .frame{position:absolute;inset:clamp(12px,3.2vw,22px);
+    border:clamp(2px,.6vw,3px) solid var(--gold);
+    box-shadow:0 0 0 clamp(5px,1.4vw,9px) var(--ink2),
+               0 0 0 calc(clamp(5px,1.4vw,9px) + 1px) rgba(201,162,39,.45),
+               inset 0 0 50px rgba(201,162,39,.06)}
+  /* şüalanan deco naxış */
+  .rays{position:absolute;inset:clamp(24px,6vw,40px);overflow:hidden;opacity:.55}
+  .door.left .rays{background:repeating-conic-gradient(from 270deg at 100% 50%,
+    rgba(201,162,39,.55) 0 .5deg, transparent .5deg 5deg)}
+  .door.right .rays{background:repeating-conic-gradient(from 90deg at 0% 50%,
+    rgba(201,162,39,.55) 0 .5deg, transparent .5deg 5deg)}
+  /* üfüqi zolaqlar */
+  .bands{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
+    height:clamp(80px,20vw,130px);
+    background:repeating-linear-gradient(180deg,
+      rgba(201,162,39,.5) 0 1.5px, transparent 1.5px clamp(9px,2.4vw,14px))}
+
+  .handle{position:absolute;top:50%;transform:translateY(-50%);
+    width:clamp(9px,2.2vw,13px);height:clamp(56px,13vw,80px);
+    background:linear-gradient(180deg,var(--gold-l),var(--gold) 45%,var(--gold-d));
+    box-shadow:0 0 22px rgba(201,162,39,.55)}
+  .door.left .handle{right:clamp(24px,6vw,42px)}
+  .door.right .handle{left:clamp(24px,6vw,42px)}
+
+  .gate-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    z-index:3;text-align:center;pointer-events:none;width:92%;transition:opacity .55s ease}
+  .gate.open .gate-center{opacity:0}
+  /* altıbucaq monoqram */
+  .badge{width:clamp(104px,29vw,140px);height:clamp(104px,29vw,140px);
+    margin:0 auto clamp(20px,4.5vw,28px);position:relative;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(160deg,#181820,#0c0c11);
+    clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);
+    box-shadow:0 12px 40px rgba(0,0,0,.6)}
+  .badge::before{content:"";position:absolute;inset:clamp(5px,1.4vw,8px);
+    border:1.5px solid var(--gold);
+    clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);
+    animation:pulse 3.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
+  .badge span{font-family:var(--display);font-size:clamp(26px,7.4vw,36px);
+    color:var(--gold-l);letter-spacing:1px;position:relative;z-index:2}
+  .tap-hint{font-size:clamp(9px,2.7vw,11px);letter-spacing:6px;text-transform:uppercase;
+    color:var(--gold);font-weight:300}
+  .tap-hint small{display:block;margin-top:12px;font-size:clamp(18px,5vw,22px);
+    letter-spacing:0;animation:tapper 1.7s ease-in-out infinite}
+  @keyframes tapper{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-8px);opacity:1}}
+
+  /* ===== KART ===== */
+  .card{position:relative;z-index:5;width:min(90vw,540px);
+    margin:clamp(24px,7vw,48px) auto;
+    padding:clamp(42px,10vw,64px) clamp(26px,7vw,46px) clamp(34px,8vw,50px);
+    text-align:center;
+    background:linear-gradient(165deg,rgba(30,30,40,.92),rgba(12,12,17,.95));
+    border:clamp(2px,.5vw,3px) solid var(--gold);
+    box-shadow:0 0 0 6px rgba(12,12,17,.9), 0 0 0 7px rgba(201,162,39,.35),
+               0 34px 90px rgba(0,0,0,.7);
+    overflow:hidden}
+  /* künc bəzəkləri */
+  .card .corner{position:absolute;width:clamp(22px,5.5vw,34px);height:clamp(22px,5.5vw,34px);
+    border:1.5px solid var(--gold);opacity:.65}
+  .card .c1{top:clamp(9px,2.4vw,14px);left:clamp(9px,2.4vw,14px);border-right:none;border-bottom:none}
+  .card .c2{top:clamp(9px,2.4vw,14px);right:clamp(9px,2.4vw,14px);border-left:none;border-bottom:none}
+  .card .c3{bottom:clamp(9px,2.4vw,14px);left:clamp(9px,2.4vw,14px);border-right:none;border-top:none}
+  .card .c4{bottom:clamp(9px,2.4vw,14px);right:clamp(9px,2.4vw,14px);border-left:none;border-top:none}
+
+  .reveal{opacity:0;transform:translateY(18px)}
+  .revealed .reveal{animation:up 1s cubic-bezier(.2,.7,.3,1) forwards}
+  @keyframes up{to{opacity:1;transform:translateY(0)}}
+
+  .eyebrow{font-size:clamp(9px,2.6vw,11px);letter-spacing:7px;text-transform:uppercase;
+    color:var(--gold);animation-delay:.25s;font-weight:300}
+
+  /* deco ayırıcı: üçbucaq + xətt */
+  .deco{margin:clamp(18px,4.5vw,26px) auto;display:flex;align-items:center;justify-content:center;
+    gap:10px;animation-delay:.4s}
+  .deco .line{width:clamp(30px,8vw,52px);height:1px;background:var(--gold)}
+  .deco .dot{width:clamp(8px,2.2vw,11px);height:clamp(8px,2.2vw,11px);
+    background:var(--gold);transform:rotate(45deg)}
+
+  .names{font-family:var(--display);font-weight:400;
+    font-size:clamp(32px,10vw,54px);line-height:1.1;color:var(--pearl);
+    margin:clamp(4px,1.6vw,8px) 0;overflow-wrap:break-word}
+  .name{animation-delay:.6s}
+  .amp{display:block;font-family:var(--display);font-size:clamp(19px,5vw,24px);
+    color:var(--gold);margin:clamp(4px,1.4vw,8px) 0;animation-delay:.75s;font-style:italic}
+  .amp2{animation-delay:.9s}
+
+  .sub{font-size:clamp(11px,3vw,13px);letter-spacing:4px;text-transform:uppercase;
+    color:var(--champagne);margin-top:clamp(14px,3.6vw,20px);animation-delay:1.05s;
+    line-height:1.9;opacity:.85}
+
+  .rule{margin:clamp(26px,6vw,36px) auto;width:0;height:1px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .revealed .rule{animation:grow 1.2s ease 1.2s forwards}
+  @keyframes grow{to{width:80%}}
+
+  .detail{margin:clamp(14px,3.6vw,20px) 0;animation-delay:1.3s}
+  .detail .label{font-size:clamp(8px,2.3vw,10px);letter-spacing:5px;text-transform:uppercase;color:var(--gold-d)}
+  .detail .value{font-family:var(--display);font-size:clamp(17px,4.6vw,21px);
+    color:var(--pearl);margin-top:8px;line-height:1.45}
+
+  .countdown{display:flex;justify-content:center;gap:clamp(5px,1.8vw,10px);
+    margin:clamp(28px,6.5vw,38px) 0 clamp(6px,2vw,10px);animation-delay:1.55s}
+  .cd-box{flex:1;max-width:70px;padding:clamp(11px,2.9vw,14px) 3px;
+    border-top:1px solid rgba(201,162,39,.5);border-bottom:1px solid rgba(201,162,39,.5)}
+  .cd-num{font-family:var(--display);font-size:clamp(20px,5.6vw,27px);color:var(--gold-l);line-height:1}
+  .cd-lab{font-size:clamp(7px,2vw,9px);letter-spacing:2.5px;text-transform:uppercase;
+    color:var(--gold-d);margin-top:8px}
+
+  .footer{margin-top:clamp(24px,5.5vw,32px);font-size:clamp(10px,2.8vw,12px);
+    letter-spacing:2.5px;text-transform:uppercase;color:var(--champagne);
+    animation-delay:1.75s;line-height:2;opacity:.7}
+  @media (max-height:620px){.badge{width:82px;height:82px;margin-bottom:16px}.card{margin:18px auto}}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important}}
+</style>
+</head>
+<body>
+<div class="scene">
+  <svg viewBox="0 0 400 800" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path class="vein" d="M-20,120 C90,180 60,290 170,340 C280,390 240,520 340,600" style="animation-delay:.2s"/>
+    <path class="vein" d="M420,90 C320,170 360,260 250,330 C140,400 190,540 80,640" style="animation-delay:.9s"/>
+    <path class="vein" d="M-20,520 C80,560 120,470 210,530 C300,590 330,700 420,720" style="animation-delay:1.6s"/>
+  </svg>
+</div>
+<div class="fan"></div>
+<div class="dust" id="dust"></div>
+
+<div class="gate" id="gate">
+  <div class="door left"><div class="rays"></div><div class="bands"></div><div class="frame"></div><div class="handle"></div></div>
+  <div class="door right"><div class="rays"></div><div class="bands"></div><div class="frame"></div><div class="handle"></div></div>
+  <div class="gate-center">
+    <div class="badge"><span id="monogram">A&amp;R</span></div>
+    <div class="tap-hint">Açmaq üçün toxunun<small>↔</small></div>
+  </div>
+</div>
+
+<main class="card" id="card">
+  <div class="corner c1"></div><div class="corner c2"></div>
+  <div class="corner c3"></div><div class="corner c4"></div>
+
+  <div class="eyebrow reveal" id="topText">Dəvətlisiniz</div>
+  <div class="deco reveal"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+  <h1 class="names">
+    <div class="name reveal" id="name1">Aynur</div>
+    <span class="amp reveal">&amp;</span>
+    <div class="name reveal amp2" id="name2">Rəşad</div>
+  </h1>
+  <div class="sub reveal" id="subText">bir olmağımızın toy şənliyinə</div>
+  <div class="rule"></div>
+  <div class="detail reveal"><div class="label">Tarix</div><div class="value" id="dateText">12 Sentyabr 2026 · Şənbə · 18:00</div></div>
+  <div class="detail reveal"><div class="label">Məkan</div><div class="value" id="venueText">Gül Palace Şadlıq Sarayı, Bakı</div></div>
+  <div class="countdown" id="countdown"></div>
+  <div class="footer reveal" id="footerText">Bu xüsusi günü bizimlə bölüşməyinizi arzu edirik</div>
+</main>
+
+<script>
+/* ===== BURANI DƏYİŞ ===== */
+const MELUMAT = {
+  monoqram:"A&R", ad1:"Aynur", ad2:"Rəşad",
+  ustYazi:"Dəvətlisiniz",
+  altYazi:"bir olmağımızın toy şənliyinə",
+  tarixYazi:"12 Sentyabr 2026 · Şənbə · 18:00",
+  mekan:"Gül Palace Şadlıq Sarayı, Bakı",
+  sonYazi:"Bu xüsusi günü bizimlə bölüşməyinizi arzu edirik",
+  toyTarixi:"2026-09-12T18:00:00"
+};
+/* ===== BURANI DƏYİŞ ===== */
+
+const $=id=>document.getElementById(id);
+$("monogram").textContent=MELUMAT.monoqram; $("name1").textContent=MELUMAT.ad1;
+$("name2").textContent=MELUMAT.ad2; $("topText").textContent=MELUMAT.ustYazi;
+$("subText").textContent=MELUMAT.altYazi; $("dateText").textContent=MELUMAT.tarixYazi;
+$("venueText").textContent=MELUMAT.mekan; $("footerText").textContent=MELUMAT.sonYazi;
+document.title=MELUMAT.ad1+" & "+MELUMAT.ad2+" — Toy Dəvətnaməsi";
+
+const small=window.innerWidth<600, dw=$("dust");
+for(let i=0;i<(small?14:26);i++){
+  const d=document.createElement("i");
+  const s=1+Math.random()*2.4;
+  d.style.width=s+"px";d.style.height=s+"px";
+  d.style.left=Math.random()*100+"vw";d.style.bottom="-20px";
+  d.style.animationDuration=(15+Math.random()*14)+"s";
+  d.style.animationDelay=(Math.random()*16)+"s";
+  dw.appendChild(d);
+}
+
+const gate=$("gate"),card=$("card");
+document.body.classList.add("locked");
+let opened=false;
+function openGate(e){if(opened)return;if(e)e.preventDefault();opened=true;
+  gate.classList.add("open");card.classList.add("revealed");
+  setTimeout(()=>{gate.classList.add("gone");document.body.classList.remove("locked")},2200);}
+gate.addEventListener("pointerdown",openGate);
+gate.addEventListener("click",openGate);
+gate.addEventListener("touchstart",openGate,{passive:false});
+
+const wd=new Date(MELUMAT.toyTarixi),lb=["Gün","Saat","Dəq","San"],cd=$("countdown");
+function r(){const d=wd-new Date();let v=[0,0,0,0];
+  if(d>0)v=[Math.floor(d/864e5),Math.floor(d/36e5)%24,Math.floor(d/6e4)%60,Math.floor(d/1e3)%60];
+  cd.innerHTML=v.map((x,i)=>`<div class="cd-box"><div class="cd-num">${String(x).padStart(2,"0")}</div><div class="cd-lab">${lb[i]}</div></div>`).join("");}
+r();setInterval(r,1000);
+</script>
+</body>
+</html>

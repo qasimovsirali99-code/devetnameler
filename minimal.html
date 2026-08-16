@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#efece4">
+<title>Toy Dəvətnaməsi — Minimal</title>
+<meta property="og:title" content="Toy Dəvətnaməsi">
+<meta property="og:description" content="Toy şənliyimizə dəvətlisiniz">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@200;300;400&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+  :root{
+    --bone:#efece4; --bone2:#e5e0d5; --paper:#faf8f4;
+    --ink:#23231f; --ink-soft:#6b6a62;
+    --clay:#9c7f68; --sage:#8b9483;
+    --display:"Cormorant Garamond",Georgia,serif;
+    --sans:"Jost","Segoe UI",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;overflow-x:hidden}
+  body{
+    font-family:var(--sans);font-weight:300;
+    background:var(--bone);
+    color:var(--ink);min-height:100vh;min-height:100dvh;
+    display:flex;align-items:center;justify-content:center;position:relative;
+    -webkit-text-size-adjust:100%;
+  }
+  body.locked{overflow:hidden;position:fixed;width:100%}
+
+  /* kağız dokusu — çox zəif */
+  .grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:
+      radial-gradient(circle at 18% 22%, rgba(156,127,104,.07), transparent 42%),
+      radial-gradient(circle at 82% 78%, rgba(139,148,131,.07), transparent 40%)}
+
+  /* ===== QAPI: sadə fil sümüyü panellər ===== */
+  .gate{position:fixed;inset:0;z-index:20;display:flex;perspective:1800px;cursor:pointer;overflow:hidden;touch-action:manipulation}
+  .gate.open{pointer-events:none}
+  .gate.gone{display:none}
+  .door{position:relative;width:50.2%;height:100%;
+    background:linear-gradient(175deg,var(--paper),var(--bone2));
+    transition:transform 2.3s cubic-bezier(.55,0,.15,1);
+    transform-style:preserve-3d;backface-visibility:hidden;will-change:transform}
+  .door.left{transform-origin:left center;box-shadow:inset -30px 0 60px rgba(35,35,31,.05)}
+  .door.right{transform-origin:right center;box-shadow:inset 30px 0 60px rgba(35,35,31,.05)}
+  .gate.open .door.left{transform:rotateY(-100deg)}
+  .gate.open .door.right{transform:rotateY(100deg)}
+  /* tək incə xətt — bütün bəzək budur */
+  .hairline{position:absolute;top:clamp(30px,8vw,64px);bottom:clamp(30px,8vw,64px);
+    width:1px;background:var(--clay);opacity:.45}
+  .door.left .hairline{right:clamp(30px,8vw,64px)}
+  .door.right .hairline{left:clamp(30px,8vw,64px)}
+  /* kiçik dəstək nöqtəsi */
+  .handle{position:absolute;top:50%;transform:translateY(-50%);
+    width:clamp(6px,1.5vw,8px);height:clamp(6px,1.5vw,8px);border-radius:50%;
+    background:var(--clay)}
+  .door.left .handle{right:clamp(27px,7.6vw,61px)}
+  .door.right .handle{left:clamp(27px,7.6vw,61px)}
+
+  .gate-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    z-index:2;text-align:center;pointer-events:none;width:90%;transition:opacity .6s ease}
+  .gate.open .gate-center{opacity:0}
+  .mono{font-family:var(--display);font-weight:300;
+    font-size:clamp(46px,14vw,74px);color:var(--ink);letter-spacing:2px;line-height:1}
+  .mono-rule{width:clamp(40px,11vw,64px);height:1px;background:var(--clay);
+    margin:clamp(20px,5vw,30px) auto;opacity:.6}
+  .tap-hint{font-size:clamp(9px,2.6vw,10px);letter-spacing:6px;text-transform:uppercase;
+    color:var(--ink-soft)}
+  .tap-hint small{display:block;margin-top:14px;font-size:clamp(15px,4vw,18px);letter-spacing:0;
+    color:var(--clay);animation:tapper 2s ease-in-out infinite}
+  @keyframes tapper{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(-7px);opacity:1}}
+
+  /* ===== KART ===== */
+  .card{position:relative;z-index:5;width:min(88vw,500px);
+    margin:clamp(28px,8vw,56px) auto;
+    padding:clamp(50px,12vw,78px) clamp(28px,8vw,50px) clamp(38px,9vw,58px);
+    text-align:center;
+    background:var(--paper);
+    box-shadow:0 2px 4px rgba(35,35,31,.03), 0 18px 50px rgba(35,35,31,.09)}
+  /* yeganə bəzək: yuxarıda incə gil rəngli xətt */
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--clay)}
+
+  .reveal{opacity:0;transform:translateY(14px)}
+  .revealed .reveal{animation:up 1.1s cubic-bezier(.2,.7,.3,1) forwards}
+  @keyframes up{to{opacity:1;transform:translateY(0)}}
+
+  .eyebrow{font-size:clamp(9px,2.5vw,10px);letter-spacing:7px;text-transform:uppercase;
+    color:var(--ink-soft);animation-delay:.3s}
+
+  .names{font-family:var(--display);font-weight:300;
+    font-size:clamp(38px,12vw,64px);line-height:1.02;color:var(--ink);
+    margin:clamp(26px,7vw,42px) 0 0;overflow-wrap:break-word;letter-spacing:-.5px}
+  .name{animation-delay:.55s}
+  .amp{display:block;font-family:var(--display);font-style:italic;font-weight:300;
+    font-size:clamp(20px,5.4vw,27px);color:var(--clay);
+    margin:clamp(6px,2vw,12px) 0;animation-delay:.75s}
+  .amp2{animation-delay:.95s}
+
+  .sub{font-size:clamp(10px,2.8vw,11px);letter-spacing:4px;text-transform:uppercase;
+    color:var(--ink-soft);margin-top:clamp(26px,7vw,40px);animation-delay:1.15s;line-height:2.2}
+
+  .rule{margin:clamp(34px,8vw,50px) auto;width:0;height:1px;background:var(--bone2)}
+  .revealed .rule{animation:grow 1.3s ease 1.35s forwards}
+  @keyframes grow{to{width:100%}}
+
+  /* tarix və məkan yan-yana */
+  .facts{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,4vw,26px);
+    animation-delay:1.45s;text-align:left}
+  .fact .label{font-size:clamp(8px,2.2vw,9px);letter-spacing:3.5px;text-transform:uppercase;
+    color:var(--clay);margin-bottom:9px}
+  .fact .value{font-family:var(--display);font-size:clamp(16px,4.4vw,20px);
+    color:var(--ink);line-height:1.4}
+  @media (max-width:400px){.facts{grid-template-columns:1fr;text-align:center}}
+
+  .countdown{display:flex;justify-content:center;gap:clamp(14px,4.5vw,30px);
+    margin:clamp(36px,9vw,54px) 0 0;animation-delay:1.65s}
+  .cd-box{text-align:center}
+  .cd-num{font-family:var(--display);font-weight:300;
+    font-size:clamp(24px,6.5vw,32px);color:var(--ink);line-height:1}
+  .cd-lab{font-size:clamp(7px,2vw,8px);letter-spacing:2.5px;text-transform:uppercase;
+    color:var(--ink-soft);margin-top:9px}
+
+  .footer{margin-top:clamp(34px,8vw,50px);font-family:var(--display);font-style:italic;
+    font-weight:300;font-size:clamp(15px,4vw,17px);color:var(--ink-soft);
+    animation-delay:1.85s;line-height:1.7}
+  @media (max-height:620px){.mono{font-size:44px}.card{margin:20px auto}}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important}}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<div class="gate" id="gate">
+  <div class="door left"><div class="hairline"></div><div class="handle"></div></div>
+  <div class="door right"><div class="hairline"></div><div class="handle"></div></div>
+  <div class="gate-center">
+    <div class="mono" id="monogram">A&amp;R</div>
+    <div class="mono-rule"></div>
+    <div class="tap-hint">Açmaq üçün toxunun<small>↔</small></div>
+  </div>
+</div>
+
+<main class="card" id="card">
+  <div class="eyebrow reveal" id="topText">Dəvətlisiniz</div>
+  <h1 class="names">
+    <div class="name reveal" id="name1">Aynur</div>
+    <span class="amp reveal">&amp;</span>
+    <div class="name reveal amp2" id="name2">Rəşad</div>
+  </h1>
+  <div class="sub reveal" id="subText">bir olmağımızın toy şənliyinə</div>
+  <div class="rule"></div>
+  <div class="facts reveal">
+    <div class="fact"><div class="label">Tarix</div><div class="value" id="dateText">12 Sentyabr 2026<br>Şənbə · 18:00</div></div>
+    <div class="fact"><div class="label">Məkan</div><div class="value" id="venueText">Gül Palace<br>Şadlıq Sarayı, Bakı</div></div>
+  </div>
+  <div class="countdown reveal" id="countdown"></div>
+  <div class="footer reveal" id="footerText">Bu xüsusi günü bizimlə bölüşməyinizi arzu edirik</div>
+</main>
+
+<script>
+/* ===== BURANI DƏYİŞ ===== */
+const MELUMAT = {
+  monoqram:"A&R", ad1:"Aynur", ad2:"Rəşad",
+  ustYazi:"Dəvətlisiniz",
+  altYazi:"bir olmağımızın toy şənliyinə",
+  // bu ikisində <br> ilə sətri qıra bilərsən
+  tarixYazi:"12 Sentyabr 2026<br>Şənbə · 18:00",
+  mekan:"Gül Palace<br>Şadlıq Sarayı, Bakı",
+  sonYazi:"Bu xüsusi günü bizimlə bölüşməyinizi arzu edirik",
+  toyTarixi:"2026-09-12T18:00:00"
+};
+/* ===== BURANI DƏYİŞ ===== */
+
+const $=id=>document.getElementById(id);
+$("monogram").textContent=MELUMAT.monoqram; $("name1").textContent=MELUMAT.ad1;
+$("name2").textContent=MELUMAT.ad2; $("topText").textContent=MELUMAT.ustYazi;
+$("subText").textContent=MELUMAT.altYazi;
+$("dateText").innerHTML=MELUMAT.tarixYazi; $("venueText").innerHTML=MELUMAT.mekan;
+$("footerText").textContent=MELUMAT.sonYazi;
+document.title=MELUMAT.ad1+" & "+MELUMAT.ad2+" — Toy Dəvətnaməsi";
+
+const gate=$("gate"),card=$("card");
+document.body.classList.add("locked");
+let opened=false;
+function openGate(e){if(opened)return;if(e)e.preventDefault();opened=true;
+  gate.classList.add("open");card.classList.add("revealed");
+  setTimeout(()=>{gate.classList.add("gone");document.body.classList.remove("locked")},2400);}
+gate.addEventListener("pointerdown",openGate);
+gate.addEventListener("click",openGate);
+gate.addEventListener("touchstart",openGate,{passive:false});
+
+const wd=new Date(MELUMAT.toyTarixi),lb=["Gün","Saat","Dəq","San"],cd=$("countdown");
+function r(){const d=wd-new Date();let v=[0,0,0,0];
+  if(d>0)v=[Math.floor(d/864e5),Math.floor(d/36e5)%24,Math.floor(d/6e4)%60,Math.floor(d/1e3)%60];
+  cd.innerHTML=v.map((x,i)=>`<div class="cd-box"><div class="cd-num">${String(x).padStart(2,"0")}</div><div class="cd-lab">${lb[i]}</div></div>`).join("");}
+r();setInterval(r,1000);
+</script>
+</body>
+</html>
